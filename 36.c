@@ -7,9 +7,9 @@ bool isValidSudoku(char** board, int boardSize, int* boardColSize) {
   int i = 0, j= 0, a, b;
   bool hi[9] = {false};
   bool hj[9] = {false};
-  bool box[3][3][9] = {{{false}}};
-  for(; i < boardSize; i++){
-    for( j=0; j < *boardColSize; j++){
+  bool box[9][9] = {{false}};
+  for(; i < 9; i++){
+    for( j=0; j < 9; j++){
       a = board[i][j] - '1';
       b = board[j][i] - '1';
       if (a != -3)
@@ -19,17 +19,16 @@ bool isValidSudoku(char** board, int boardSize, int* boardColSize) {
           return 0; 
         } else 
           hi[a] = true;
-
-        if (box[i/3][j/3][a] == true)
-        {
-          return 0; 
-        } else {
-          box[i/3][j/3][a] = true;
+       int8_t partition= (i/3) * 3 + j/3; 
+        if (box[partition][a] == true){
+          return 0;
         }
+        else 
+         box[partition][a] = true;
+        
       }
       if (b != -3) 
       {  
-        printf("a: %d, b: %d\n", a,b);
         if(hj[b] == true)
         {
           return 0; 
@@ -51,8 +50,8 @@ int main(){
     "...195..6",
     ".98....2.",
     "8...6...3",
-    "...8.3..1",
-    "7...2...4",
+    "...8.3.41",
+    "7...2....",
     ".6....28.",
     ".2.41...5",
     "....8..79"
