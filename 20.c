@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
-#define MAX_SIZE 10000
 typedef struct {
   int top;
-  int arr[MAX_SIZE];
+  char *arr;
 } Stack;
 
 void initialize(Stack *stack){
@@ -15,14 +15,15 @@ int getTop(Stack *stack){
   return stack->top;
 }
 void insert (Stack *stack, int value){
-  if(stack->top != MAX_SIZE){
     stack->top++;
     stack->arr[stack->top] = value;
-  }
 }
 int pop (Stack *stack){
-  int popped = stack->arr[stack->top];
-  stack->top--;
+  int popped = '\0';
+  if (stack->top > -1) {
+    popped = stack->arr[stack->top];
+    stack->top--;
+  }
   return popped;
 }
 int openEquivalent (char closeSign)
@@ -36,9 +37,12 @@ int openEquivalent (char closeSign)
 }
 bool isValid(char *s)
 {
+  int len = strlen(s);
+  if(len%2 != 0) return false;
   Stack stack;
+  char data[len];
+  stack.arr = data;
   initialize(&stack);
-  if(sizeof s%2 != 0) return false;
   for (int i = 0; s[i] != '\0' ;i++)
   {
     if (s[i] == '[' || s[i] == '{' || s[i] == '(')
@@ -56,6 +60,6 @@ bool isValid(char *s)
 
 int main()
 {
-  char *c ="([})";
+  char *c ="){";
   printf("result: %d\n", isValid(c));
 }
