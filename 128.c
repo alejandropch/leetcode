@@ -3,45 +3,48 @@
 #include <string.h>
 
 int longestConsecutive(int* nums, int numsSize) {
-   printf("GA?");
-   unsigned MOD = numsSize * 4; 
-   int unique[numsSize], set[MOD], uniquen = 0, hash, longest;;
-   memset(set, 0x7f, sizeof(set));
-   int INF = set[0];
-#define HASH(v) ((unsigned)(v) % MOD)
-#define AVAILABLE_SLOT(hash, n) {int step = 1; while(set[hash] != INF && set[hash] != (n)) (hash)=(hash + (step++))% MOD;}
-   for (int i = 0; i < numsSize; i++)
-   {
-     hash = HASH(nums[i]); 
-     AVAILABLE_SLOT(hash, nums[i]);
-     set[hash] = nums[i];
-     unique[uniquen++] = nums[i];
-   }
-   longest = 0;
-   for (int i = 0; i < uniquen; i++){
-      hash = HASH(nums[i] - 1);
-      if(set[hash] == INF)
+  printf("hOLA? %d", numsSize);
+  if (numsSize == 0) return 0;
+  unsigned int MOD = numsSize * 4;
+  int set[MOD], unique[numsSize], uniqueN = 0, hash;
+  memset(set, 0x7f, sizeof(set));
+  int INF = set[0];
+  #define HASH(n) ((unsigned)(n) % MOD)
+  #define AVAILABLE_HASH(hash, n) {int step = 1; while(set[hash] != INF && set[hash] != n) hash = ((hash + step++)%MOD);}
+  for ( int i = 0; i < numsSize; i++ )
+  {
+    hash = HASH(nums[i]);
+    AVAILABLE_HASH(hash, nums[i]);
+    if(set[hash] == INF)
+      unique[uniqueN++] = nums[i];
+    set[hash] = nums[i];
+  }
+  int longest = 0;
+  for (int i = 0; i < uniqueN; i++)
+  {
+    hash = HASH(unique[i] - 1);
+    AVAILABLE_HASH(hash, unique[i] - 1);
+    if( set[hash] == INF){
+      for(int len = 0, j = unique[i];;len++, j++)
       {
-       for(int j = 0, len=0; ;j++, len++)
-       {
-         hash = HASH(nums[j]);
-         if(nums[hash] == INF)
-         {
-           if ( len > longest) longest = len;
-           break;
-         }
-       }
-        
+        hash = HASH(j);
+        AVAILABLE_HASH(hash, j);
+        if(set[hash] == INF)
+        {
+          if(len > longest) longest = len;
+          break;
+        }
       }
-   }
-   return longest;
-   
+    }
+  }
+  return longest;
 }
 int main(){
 
-  printf(": dn");
-  int nums[] = {100, 4, 200,1,3,2};
-  int a = 6;
+  int nums[] = {100, 4, 200, 1, 2, 3} ;
+
+
+  int a = sizeof(nums);
   int l = longestConsecutive(nums, a);
   printf("res: %d\n", l);
   return 0;
