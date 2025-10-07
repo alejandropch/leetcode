@@ -3,7 +3,6 @@
 #include <string.h>
 
 int longestConsecutive(int* nums, int numsSize) {
-  printf("hOLA? %d", numsSize);
   if (numsSize == 0) return 0;
   unsigned int MOD = numsSize * 4;
   int set[MOD], unique[numsSize], uniqueN = 0, hash;
