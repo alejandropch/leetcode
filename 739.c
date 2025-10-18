@@ -1,19 +1,26 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+typedef struct {
+  int top;
+  int *arr;
+} Stack;
 
 int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize) {
+   Stack stack;
+   stack.arr = calloc(temperaturesSize, sizeof(int));
+   stack.top = -1;
    *returnSize = temperaturesSize;
    int i=0,j=0;
-   int *res = (int*)malloc(temperaturesSize * sizeof(int));
-   for(; i < temperaturesSize; i++){
-     for (j = i; j < temperaturesSize; j++) {
-      if(temperatures[i] < temperatures[j]){
-          res[i] = j - i;
-          break;
-      }
+   int *res = (int*)calloc(temperaturesSize, sizeof(int));
+
+   for(i = 0; i < temperaturesSize; i++){
+     while ( stack.top >= 0 && temperatures[i] > temperatures[stack.arr[stack.top]] ){
+        res[stack.arr[stack.top]] = i - stack.arr[stack.top];
+        stack.top--;
      }
-     if(j == temperaturesSize)
-      res[i] = 0;
+     stack.arr[++stack.top] = i;
    }
    return res;
 }
