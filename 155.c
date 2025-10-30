@@ -10,44 +10,44 @@ typedef struct {
 
 typedef struct {
   int top;
-  Node *arr[SIZE];
+  Node *arr;
 } MinStack;
 
 MinStack* minStackCreate() {
   MinStack *obj = malloc(sizeof(MinStack));
+  Node *arr = malloc(sizeof(Node) * SIZE);
   obj->top = -1;
   return obj;
 }
 
 void minStackPush(MinStack* obj, int val) {
-  Node *n = malloc(sizeof(Node));
+  Node n; 
   if(obj->top == -1){
-    n->v = val;
-    n->min = val;
+    n.v = val;
+    n.min = val;
     obj->arr[++obj->top] = n;
     return;
   }
-  if (val < obj->arr[obj->top]->min) n->min = val; 
-  else n->min = obj->arr[obj->top]->min;
-  n->v = val;
+  if (val < obj->arr[obj->top].min) n.min = val; 
+  else n.min = obj->arr[obj->top].min;
+  n.v = val;
   obj->arr[++obj->top] = n;
 }
 
 void minStackPop(MinStack* obj) {
-   free(obj->arr[obj->top--]);
+   obj->arr[obj->top--];
 }
 
 int minStackTop(MinStack* obj) {
-   return obj->arr[obj->top]->v;
+   return obj->arr[obj->top].v;
 }
 
 int minStackGetMin(MinStack* obj) {
-   return obj->arr[obj->top]->min;
+   return obj->arr[obj->top].min;
 }
 
 void minStackFree(MinStack* obj) {
-   for(int i = 0; i< obj->top; i++)
-     free(obj->arr[i]);
+  free(obj->arr);
   free(obj);
 }
 
@@ -73,14 +73,15 @@ void main(){
   minStackPush(obj, -3);
  
  int param_2 = minStackGetMin(obj);
-  printf("%d\n", param_2);
+  printf("whaT? %d\n", param_2);
   minStackPop(obj);
  
  int param_3 = minStackGetMin(obj);
-  printf("%d\n", param_3);
+  printf("whaT? %d\n", param_3);
  
  int param_4 = minStackGetMin(obj);
-  printf("%d\n", param_4);
+  printf("whaT? %d\n", param_4);
  
  minStackFree(obj);
 }
+
