@@ -1,34 +1,28 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <stdlib.h>
 
 bool isPalindrome(char* s) {
-  int j = 0, i, z;
-  int len = strlen(s);
-  char *modified =  malloc(len + 1); 
-  for(i = 0; i < len; i++ ){
-    if (s[i] == ' ')
-      continue;
-    if (s[i] >= 65 && s[i] <= 90) {
-     modified[j++] =  s[i] - 'A' + 'a';
+  int start = 0, end = strlen(s) - 1;
+  while(start < end){
+    while(start < end && !isalnum(s[start])){
+      start++;
     }
-    if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= '0' && s[i] <= '9')) {
-     modified[j++] =  s[i];
+    while(end > start && !isalnum(s[end])){
+      end--;
     }
-  }
-  modified[j] = '\0';
-  int modifiedlen = strlen(modified);
-  for(i = 0, z = modifiedlen - 1; i < z ; i++, z--){
-      if(modified[i] != modified[z]){
-        return false;
-      }
+    
+    if(tolower(s[start]) != tolower(s[end]))
+      return false;
+    start++;
+    end--;
   }
   return true;
 }
 int main()
 {
-  char *s = " ";
+  char *s = "0P";
   char r = isPalindrome(s);
   printf("res: %d", r);
   return 0;
