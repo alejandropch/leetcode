@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-typedef struct {
-  int speed;
-  int position;
-} Fleet;
+
+int comp (const void *a, const void*b) {
+  return *(int*)b - *(int*)a;
+}
 int carFleet(int target, int* position, int positionSize, int* speed, int speedSize) {
   /*
    * 100
@@ -17,41 +17,19 @@ int carFleet(int target, int* position, int positionSize, int* speed, int speedS
   4 1 => 5
   5 1 => 6    =>  5, 1 => 6
   */
-  Fleet* stack  = malloc((sizeof(Fleet) * positionSize));
-  int mem = -1;
-  int top = -1;
-  int i = -1;
-  for( i= 0; i < positionSize; i++){
-    mem = position[i] + speed[i];
-    if(mem <= target) {
-      if( top == -1 ) {
-        stack[++top].position = position[i];
-        stack[top].speed= speed[i];
-        continue;
-      } 
-      if(stack[top].position + stack[top].speed == mem){ 
-        stack[top].position = position[i]; 
-        stack[top].speed= stack[top].speed > speed[i]? speed[i]: stack[top].speed; 
-      }
-      else { 
-        stack[++top].position = position[i]; 
-        stack[top].speed= speed[i];
-      }
+  // sorting 
+  qsort(position, positionSize, sizeof(int), comp);
+  int t, head = 0;
+  int *fleet = calloc(speedSize, sizeof(int));
+  fleet[head] = speed[0];
+  //filling up the fleets
+  for (int i = positionSize - 1; i >= 0; i--) {
+    t = (target - position[i]) / speed[i];
+    if (t <= fleet[head]){
+      fleet[++head] = speed[i];
     }
   }
-  mem = -1;
-  i = -1; 
-  for(int j = 0; j <= top; j++){ 
-    printf("stack[%d]: pos-> %d \t speed-> %d\n", j, stack[j].position, stack[j].speed);
-    if(stack[j].position + stack[j].speed == mem){ 
-      stack[j].position = position[j]; 
-      stack[j].speed= stack[j].speed > speed[i]? speed[i]: stack[j].speed; 
-      top--;
-    }
-    mem = stack[j].position + stack[j].speed;
-    i = j;
-  }
-  return top + 1;
+  return head;
 }
 
 int main(){
