@@ -1,28 +1,45 @@
 #include <stdlib.h>
-#include <stdio.h>
 int comp(void const *a, void const *b){
   return *(int*)a - *(int*)b;
 } 
 int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
   qsort(nums, numsSize, sizeof(int),  comp);
-  int a, left = 0, right = numsSize - 1, i, dup, target;
-  int **res = malloc(sizeof(int) * numsSize);
+  int  left, right,  i, three_sum, c = 0;
+  int *r;
+  int **res = malloc(sizeof(int*) * numsSize * (numsSize-1)/2);
   for (i = 0; i < numsSize; i++) {
-    a = i;
-    target = 0 - nums[a];
-    while (1) {
-      if (nums[left] + nums[right] == target){
-        printf("[ %d, %d, %d ]\n", nums[a], nums[left],nums[right]);
-        break;
-      }
-      if (nums[left] == nums[a] || nums[left] + nums[right]< target){
+    if(i > 0 && nums[i] == nums[i - 1]){
+      continue;
+    }
+    left = i + 1; 
+    right = numsSize - 1;
+    while (left < right) {
+      three_sum = nums[i] + nums[left] + nums[right];
+      if (three_sum < 0){
         left++;
       }
-      if (nums[right] == nums[a] || nums[right] + nums[left]> target){
+      else if (three_sum > 0){
         right--;
+      }
+      else {
+        r = malloc(3 * sizeof(int));
+        r[0] = nums[i];
+        r[1] = nums[left];
+        r[2] = nums[right];
+        res[c++] = r;
+        left++;
+        right--;
+        while(nums[left] == nums[left-1] && left < right) left++;
+        while(nums[right] == nums[right+1] && right > left) right--;
+
       }
     }
   }
+  *returnSize=c;
+  *returnColumnSizes = malloc(sizeof(int) * (c));
+  for (int i = 0; i < c; i++)
+      (*returnColumnSizes)[i] = 3;
+
   return res;
 }
 
