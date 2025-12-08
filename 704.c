@@ -9,7 +9,7 @@ int search(int* nums, int numsSize, int target) {
     if(target > nums[mid])
       l = mid + 1;
 
-    mid = l + (l - r) / 2;
+    mid = l + (r - l) / 2;
   } 
   return -1;
 }
