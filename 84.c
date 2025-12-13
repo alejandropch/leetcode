@@ -1,38 +1,25 @@
-#include <stdlib.h>
 #include <stdio.h>
-
 int largestRectangleArea(int* heights, int heightsSize) {
-  int area, h, head=-1, i = 0, max = 0, w, currentHeight; 
-  int *stack = malloc((heightsSize + 1) * sizeof(int)); // +1 so i when calculating the area of the last element, i don't get a seg fault
-  for( i = 0; i <= heightsSize; i++)
-  {
-    if( i == heightsSize) 
-      currentHeight = 0;
-    else
-     currentHeight=heights[i];
-
-    while( head != -1 && currentHeight < heights[stack[head]]){ // if true, then an item(s) in the stack will be popped
-      h = heights[stack[head--]]; // previous bar
-      if(head == -1)
-        w = i;
-      else 
-        w= i - stack[head] -1;
-      area = h * w;
-      if(h > area)
-        max = h;
-      else if (area > max)
-       max = area;
+  int i, r, l, w, head = -1, ch, carea, max = -1, h;
+  int stack[heightsSize+1];
+  for (i = 0; i <= heightsSize; i++) {
+    h = i ==  heightsSize? 0 : heights[i];
+    while (head != -1 && heights[stack[head]] >= h) {
+      ch = heights[stack[head--]];
+      l = head == -1 ? -1 : stack[head];
+      r = i;
+      w = r - l - 1;
+      carea = w * ch;
+      if(carea > max)
+        max = carea;
     }
-    stack[++head] = i;
-    
-  }
+    stack[++head] = i; 
+  } 
   return max;
 }
-int main() {
-  int a[] = {2,1,5,6,3};
-  int b = largestRectangleArea(a, 5);
-  printf("res: %d\n", b);
-
+int main(){
+  int a[] = {2,1,5,6,2,3};
+  int r = largestRectangleArea(a, sizeof(a)/ sizeof(int));
+  printf("res: %d\n", r);
   return 0;
-
 }
