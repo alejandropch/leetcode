@@ -1,17 +1,17 @@
 #include <limits.h>
 #include <stdio.h>
 int findMin(int* nums, int numsSize) {
-
-  int l= 0, r = numsSize - 1, mid;
-  while(l <= r)
-  {
+  printf("agaa: %d\n", 1/2);
+  int l = 0, r = numsSize - 1, mid;
+  while (l < r) {
     mid = l + (r - l)/2;
-    if (nums[mid] > nums[r])
+    if(nums[mid] > nums[r])
       l = mid + 1;
-    else
+    if(nums[mid] < nums[r])
       r = mid;
   }
-  return nums[l];
+  mid = l + (r - l)/2;
+  return nums[mid];
 }
 
 int main(){
