@@ -13,41 +13,15 @@ class TreeNode{
 };
 
 int maxDepth(TreeNode* root){
-  TreeNode *prev;
-  int max = 0, current_max = 0, steps = 1;
-  while(root != nullptr){
-    if(root->left == nullptr){
-      current_max++;
-      if(current_max > max){
-        max = current_max;
-      }
-      cout<<root->val<<endl;
-      root = root->right;
-    }
-    else{
-      prev = root->left;
-      steps = 1;
-      while(prev->right != nullptr && prev->right != root){
-        prev = prev->right;
-        steps++;
-      }
-      if(prev->right == nullptr){
-        current_max++;
-        if(current_max > max){
-          max = current_max;
-        }
-        prev->right = root;
-        root = root->left;
-      }else{
-        current_max = current_max - steps;
-        cout<<root->val<<endl;
-        prev->right = nullptr;
-        root = root->right;
-      }
-    }
+  if(!root){
+    return 0;
   }
-  cout << "max: " << max << endl;
-  return max;
+  int left = maxDepth(root->left);
+  int right = maxDepth(root->right);
+  if(left > right)
+    return 1 + left;
+
+  return 1 + right;
 }
 int main(){
   TreeNode *tree = new TreeNode(3);
